@@ -1,0 +1,101 @@
+* {
+    box-sizing: border-box;
+}
+
+h1 {
+  color: white;
+  padding-left: 50px;
+}
+
+html {
+  background-image: url('images/battle-space-background.jpg');
+  background-size: cover;
+}
+
+#game-screen {
+  padding-left: 50px;
+}
+
+#battle-background {
+  background: purple;
+  width: 557px;
+  height: 500px;
+}
+
+.pokemon-display{
+  float: left;
+  border-style: solid;
+  width: 50%;
+}
+
+#menu{
+  float: left;
+  border-style: solid;
+  width: 100%;
+}
+#menu:before{
+	content: "";
+	display: block;
+	padding-top: 30%;
+}
+
+
+.poke-name {
+  padding: none;
+  margin: none;
+  width: 100%;
+  font-size: 200%;
+  color: white;
+}
+#player-name-index{
+}
+#opposing-name-index{
+  text-align: right;
+}
+
+
+.poke-stats {
+  width: 100%;
+  color: white;
+}
+#player-stats-index{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#opposing-stats-index{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: right;
+}
+
+
+.poke-pic {
+  width: 100%;
+  background: purple;
+}
+#player-pic-index {
+  float: left;
+  width: 85%;
+}
+#opposing-pic-index {
+  float: right;
+  width: 85%;
+}
+
+
+
+
+
+
+.box{
+  float: left;
+  width: 10%;
+  background: black;
+}
+.box:before{
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
