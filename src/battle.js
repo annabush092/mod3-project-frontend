@@ -14,7 +14,6 @@ class Battle {
     <div id='left-display' class='pokemon-display'></div>
     <div id='right-display' class='pokemon-display'></div>
     <div id='menu'></div>
-
     <div id="game-modal" class="modal">
       <div class="modal-content">
         <p> Text inside Modal </p>
@@ -84,8 +83,7 @@ class Battle {
 
     menu.addEventListener("submit", function(e){
       e.preventDefault()
-      const moveId = parseInt(e.target[0].value)
-      const move = this.player.all_moves.find(x => x.move_id === moveId)
+      const move = this.player.all_moves.find(x => x.move_id === parseInt(e.target[0].value))
       this.turn(move)
     }.bind(this))
 
@@ -100,10 +98,8 @@ class Battle {
     console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
     if(parseInt(this.player.all_stats[5].base_stat) <= 0){
       this.bigFinale(this.player)
-      return
     }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
       this.bigFinale(this.opposing)
-      return
     }
   }
 
@@ -120,7 +116,7 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.player)
     }
-    this.addModal(`Opposing pokemon uses: ${move.flavor_text}`)
+    this.addModal(`Opposing pokemon uses ${move.name}! ${move.flavor_text}`)
   }
 
   playerTurn(move) {
@@ -135,23 +131,12 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.opposing)
     }
-    this.addModal(`Player pokemon uses: ${move.flavor_text}`)
-
+    this.addModal(`Player pokemon uses ${move.name}! ${move.flavor_text}`)
   }
 
   addModal(message){
     document.getElementById('game-modal').style.display = "block"
-  //   const modal = document.createElement('div')
-  //   modal.id= "gameModal"
-  //   modal.className= "modal"
-  //   modal.innerHTML=`<div>${message}</div>`
-  //   const screen = document.getElementById('game-screen')
-  //   document.appendChild(modal)
-  //   modal.style.display = "block"
-  //   modal.addEventListener("click", function(){
-  //     modal.style.display = "none"
-    //
-    // })
+    
   }
 
   updateStat(statHash, poke) {
@@ -159,11 +144,12 @@ class Battle {
     const stat = poke.all_stats.find(x => x.stat_name === Object.keys(statHash)[0])
     stat.base_stat += (parseInt(Object.values(statHash)[0]) * baseAttack)
     document.getElementById(`${poke.name}-${Object.keys(statHash)[0]}`).innerHTML = `${stat.stat_name}: ${stat.base_stat}`
+    this.addModal(`Show Stats Here`)
     this.checkWinner()
   }
 
   bigFinale(poke){
-    window.alert(`${poke.name} fainted!!!!!!`)
+    this.checkWinner(`${poke.name} fainted!!!!!!`)
   }
 
 
