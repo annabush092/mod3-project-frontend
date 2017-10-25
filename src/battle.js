@@ -15,8 +15,7 @@ class Battle {
     <div id='right-display' class='pokemon-display'></div>
     <div id='menu'></div>
     <div id="game-modal" class="modal">
-      <div class="modal-content">
-        <p> Text inside Modal </p>
+      <div id="modal-content" class="modal-content">
       </div>
     </div>`
 
@@ -98,8 +97,10 @@ class Battle {
     console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
     if(parseInt(this.player.all_stats[5].base_stat) <= 0){
       this.bigFinale(this.player)
+      return
     }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
       this.bigFinale(this.opposing)
+      return
     }
   }
 
@@ -116,7 +117,7 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.player)
     }
-    this.addModal(`Opposing pokemon uses ${move.name}! ${move.flavor_text}`)
+    this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`)
   }
 
   playerTurn(move) {
@@ -131,12 +132,15 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.opposing)
     }
-    this.addModal(`Player pokemon uses ${move.name}! ${move.flavor_text}`)
+    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`)
   }
 
   addModal(message){
     document.getElementById('game-modal').style.display = "block"
-    
+    document.getElementById('modal-content').innerHTML = `<p>${message}</p>`
+    window.onclick = function(event) {
+        document.getElementById('game-modal').style.display = "none";
+    }
   }
 
   updateStat(statHash, poke) {
@@ -144,7 +148,7 @@ class Battle {
     const stat = poke.all_stats.find(x => x.stat_name === Object.keys(statHash)[0])
     stat.base_stat += (parseInt(Object.values(statHash)[0]) * baseAttack)
     document.getElementById(`${poke.name}-${Object.keys(statHash)[0]}`).innerHTML = `${stat.stat_name}: ${stat.base_stat}`
-    this.addModal(`Show Stats Here`)
+    // this.addModal(`Show Stats Here`)
     this.checkWinner()
   }
 
