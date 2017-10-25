@@ -13,7 +13,14 @@ class Battle {
     document.getElementById('battle-background').innerHTML = `
     <div id='left-display' class='pokemon-display'></div>
     <div id='right-display' class='pokemon-display'></div>
-    <div id='menu'></div>`
+    <div id='menu'></div>
+
+    <div id="game-modal" class="modal">
+      <div class="modal-content">
+        <p> Text inside Modal </p>
+      </div>
+    </div>`
+
 
     document.getElementById('left-display').innerHTML = `
     <div id='player-name' class='poke-name'></div>
@@ -25,8 +32,7 @@ class Battle {
     <div id='opposing-name' class='poke-name'></div>
     <div id='opposing-stats' class='poke-stats'></div>`
 
-    const menu = document.getElementById('menu')
-    menu.innerHTML = `
+    document.getElementById('menu').innerHTML = `
     <form class="battleForm" action="index.html" method="post">
     <label>Moves:</label>
     <select id="moveMenu"></select>
@@ -36,9 +42,6 @@ class Battle {
     //to be added later:
     //<label>Pokemon:</label>
     // <select id="pokeMenu"></select>
-
-
-
   }
 
   renderBattle() {
@@ -59,7 +62,7 @@ class Battle {
     const playerStatList = document.createElement('ul')
 
     for(let i = 0; i < 6; i++){
-      playerStatList.innerHTML += `<li> ${this.player.all_stats[i].stat_name}: ${this.player.all_stats[i].base_stat} </li>`
+      playerStatList.innerHTML += `<li id="${this.player.name}-${this.player.all_stats[i].stat_name}"> ${this.player.all_stats[i].stat_name}: ${this.player.all_stats[i].base_stat} </li>`
     }
     playerStats.appendChild(playerStatList)
 
@@ -68,7 +71,7 @@ class Battle {
     const opposingStatList = document.createElement('ul')
 
     for(let i = 0; i < 6; i++){
-      opposingStatList.innerHTML += `<li> ${this.opposing.all_stats[i].stat_name}: ${this.opposing.all_stats[i].base_stat} </li>`
+      opposingStatList.innerHTML += `<li id="${this.opposing.name}-${this.opposing.all_stats[i].stat_name}"> ${this.opposing.all_stats[i].stat_name}: ${this.opposing.all_stats[i].base_stat} </li>`
     }
     opposingStats.appendChild(opposingStatList)
 
@@ -77,16 +80,91 @@ class Battle {
       moveMenu.innerHTML += `<option value="${this.player.all_moves[i].move_id}">${this.player.all_moves[i].move}</option>`
     }
 
+    console.log(this.player.id)
+
     menu.addEventListener("submit", function(e){
       e.preventDefault()
       const moveId = parseInt(e.target[0].value)
       const move = this.player.all_moves.find(x => x.move_id === moveId)
-      console.log(move.flavor_text)
+      this.turn(move)
     }.bind(this))
 
+  }
 
+  turn(move) {
+    this.playerTurn(move)
+    this.opposingTurn()
+  }
 
+  checkWinner(){
+    console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
+    if(parseInt(this.player.all_stats[5].base_stat) <= 0){
+      this.bigFinale(this.player)
+      return
+    }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
+      this.bigFinale(this.opposing)
+      return
+    }
+  }
+
+  opposingTurn() {
+    const move = this.opposing.all_moves[Math.floor(Math.random() * this.opposing.all_moves.length)]
+    if (move.stat_change.length > 0) {
+      for(const statHash of move.stat_change) {
+        if(Object.values(statHash) > 0) {
+          this.updateStat(statHash, this.opposing)
+        }else {
+          this.updateStat(statHash, this.player)
+        }
+      }
+    } else {
+        this.updateStat({"hp": -2}, this.player)
+    }
+    this.addModal(`Opposing pokemon uses: ${move.flavor_text}`)
+  }
+
+  playerTurn(move) {
+    if (move.stat_change.length > 0) {
+      for(const statHash of move.stat_change) {
+        if(Object.values(statHash) > 0) {
+          this.updateStat(statHash, this.player)
+        }else {
+          this.updateStat(statHash, this.opposing)
+        }
+      }
+    } else {
+        this.updateStat({"hp": -2}, this.opposing)
+    }
+    this.addModal(`Player pokemon uses: ${move.flavor_text}`)
 
   }
+
+  addModal(message){
+    document.getElementById('game-modal').style.display = "block"
+  //   const modal = document.createElement('div')
+  //   modal.id= "gameModal"
+  //   modal.className= "modal"
+  //   modal.innerHTML=`<div>${message}</div>`
+  //   const screen = document.getElementById('game-screen')
+  //   document.appendChild(modal)
+  //   modal.style.display = "block"
+  //   modal.addEventListener("click", function(){
+  //     modal.style.display = "none"
+    //
+    // })
+  }
+
+  updateStat(statHash, poke) {
+    let baseAttack = Math.floor(Math.random() * 10)
+    const stat = poke.all_stats.find(x => x.stat_name === Object.keys(statHash)[0])
+    stat.base_stat += (parseInt(Object.values(statHash)[0]) * baseAttack)
+    document.getElementById(`${poke.name}-${Object.keys(statHash)[0]}`).innerHTML = `${stat.stat_name}: ${stat.base_stat}`
+    this.checkWinner()
+  }
+
+  bigFinale(poke){
+    window.alert(`${poke.name} fainted!!!!!!`)
+  }
+
 
 }
