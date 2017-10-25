@@ -1,6 +1,10 @@
 class Battle {
 
-  constructor() {
+  constructor(player, opposing) {
+    this.player = player
+    this.opposing = opposing
+    this.renderBattleDisplay();
+    this.renderBattle()
   }
 
   renderBattleDisplay() {
@@ -20,34 +24,69 @@ class Battle {
     <div id='opposing-pic' class='poke-pic'></div>
     <div id='opposing-name' class='poke-name'></div>
     <div id='opposing-stats' class='poke-stats'></div>`
+
+    const menu = document.getElementById('menu')
+    menu.innerHTML = `
+    <form class="battleForm" action="index.html" method="post">
+    <label>Moves:</label>
+    <select id="moveMenu"></select>
+    <input type='submit' id="moveSubmit"></input>
+    </form>
+    `
+    //to be added later:
+    //<label>Pokemon:</label>
+    // <select id="pokeMenu"></select>
+
+
+
   }
 
-  renderBattle(player, opposing) {
-      document.getElementById('player-pic').innerHTML = `
-      <image id='player-pic-index' src="images/pokemon-pic-example.png">`
+  renderBattle() {
 
-      document.getElementById('opposing-pic').innerHTML = `
-      <image id='opposing-pic-index' src="images/pokemon-pic-example.png">`
+    document.getElementById('player-pic').innerHTML =
+    `<image id="player-pic" src="${this.player.back_default}">`
 
-      document.getElementById('player-name').innerHTML = `
-      <div id='player-name-index'>Pokemon Name</div>`
+    document.getElementById('opposing-pic').innerHTML =
+    `<image id="opposing-pic" src="${this.opposing.front_default}">`
 
-      document.getElementById('opposing-name').innerHTML = `
-      <div id='opposing-name-index'>Opposing Pokemon</div>`
+    document.getElementById('player-name').innerHTML =
+    `<div id="player-name">${this.player.name.toUpperCase()}</div>`
 
-      document.getElementById('player-stats').innerHTML = `
-      <ul id='player-stats-index'>
-      <li>HP: </li>
-      <li>Speed: </li>
-      <li>Persistence: </li>
-      </ul>`
+    document.getElementById('opposing-name').innerHTML =
+    `<div id="opposing-name">${this.opposing.name.toUpperCase()}</div>`
 
-      document.getElementById('opposing-stats').innerHTML = `
-      <ul id='opposing-stats-index'>
-      <li>HP: </li>
-      <li>Anger: </li>
-      <li>Melancholy: </li>
-      </ul>`
+    const playerStats = document.getElementById('player-stats')
+    const playerStatList = document.createElement('ul')
+
+    for(let i = 0; i < 6; i++){
+      playerStatList.innerHTML += `<li> ${this.player.all_stats[i].stat_name}: ${this.player.all_stats[i].base_stat} </li>`
+    }
+    playerStats.appendChild(playerStatList)
+
+
+    const opposingStats = document.getElementById('opposing-stats')
+    const opposingStatList = document.createElement('ul')
+
+    for(let i = 0; i < 6; i++){
+      opposingStatList.innerHTML += `<li> ${this.opposing.all_stats[i].stat_name}: ${this.opposing.all_stats[i].base_stat} </li>`
+    }
+    opposingStats.appendChild(opposingStatList)
+
+    let moveMenu = document.getElementById('moveMenu')
+    for(let i = 0; i < this.player.all_moves.length; i++){
+      moveMenu.innerHTML += `<option value="${this.player.all_moves[i].move_id}">${this.player.all_moves[i].move}</option>`
+    }
+
+    menu.addEventListener("submit", function(e){
+      e.preventDefault()
+      const moveId = parseInt(e.target[0].value)
+      const move = this.player.all_moves.find(x => x.move_id === moveId)
+      console.log(move.flavor_text)
+    }.bind(this))
+
+
+
+
   }
 
 }

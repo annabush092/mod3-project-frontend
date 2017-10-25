@@ -22,6 +22,7 @@ html {
   height: 500px;
 }
 
+
 .pokemon-display{
   float: left;
   border-style: solid;
@@ -32,6 +33,7 @@ html {
   float: left;
   border-style: solid;
   width: 100%;
+  background: purple;
 }
 #menu:before{
 	content: "";
@@ -47,9 +49,9 @@ html {
   font-size: 200%;
   color: white;
 }
-#player-name-index{
+#player-name{
 }
-#opposing-name-index{
+#opposing-name{
   text-align: right;
 }
 
@@ -58,12 +60,12 @@ html {
   width: 100%;
   color: white;
 }
-#player-stats-index{
+#player-stats{
   list-style: none;
   padding: 0;
   margin: 0;
 }
-#opposing-stats-index{
+#opposing-stats{
   list-style: none;
   padding: 0;
   margin: 0;
@@ -75,14 +77,16 @@ html {
   width: 100%;
   background: purple;
 }
-#player-pic-index {
+#player-pic {
   float: left;
   width: 85%;
 }
-#opposing-pic-index {
+#opposing-pic {
   float: right;
   width: 85%;
 }
+
+
 
 
 

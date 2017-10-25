@@ -1,12 +1,22 @@
 window.onload = function(){
 
-  fetch('')
-  .then(res => res.json())
-  .then(json => function(json){
-    console.log(json)
-  })
+  const api = new Api
 
-  // battle = new Battle
-  // battle.renderBattleDisplay()
-  // battle.renderBattle()
+
+  let randomNums = [];
+
+  for(let i = 0; i < 2; i++){
+  randomNums.push(Math.floor(Math.random() * 150))
+  }
+
+  api.getPokemonData(randomNums)
+
+
+
+
+  // randomNum = Math.floor(Math.random() * 150)
+  // api.getPokemonData(randomNum, battle.renderBattle)
+
+
+
 }
