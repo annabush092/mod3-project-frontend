@@ -1,9 +1,21 @@
 class Battle {
 
-  constructor(player, opposing) {
-    this.player = player
-    this.opposing = opposing
+  constructor(user, app) {
+    this.user = user
+    this.app = app
     this.renderBattleDisplay();
+    this.findPlayers();
+  }
+
+  findPlayers() {
+    const pokeId = this.user.pokemon[0].pokemon_id
+    this.api = new Api
+    this.api.getPlayerPokemon(this, pokeId)
+  }
+
+  startGame(player, opposing) {
+    this.player = new Pokemon(player)
+    this.opposing = new Pokemon(opposing)
     this.renderBattle()
   }
 
@@ -94,15 +106,32 @@ class Battle {
   //   this.opposingTurn()
   // }
 
-  checkWinner(){
-    console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
-    if(parseInt(this.player.all_stats[5].base_stat) <= 0){
-      this.bigFinale(this.player)
-      return
-    }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
-      this.bigFinale(this.opposing)
-      return
+
+
+
+
+  playerTurn(move) {
+    if (move.stat_change.length > 0) {
+      for(const statHash of move.stat_change) {
+        if(Object.values(statHash) > 0) {
+          this.updateStat(statHash, this.player)
+        }else {
+          this.updateStat(statHash, this.opposing)
+        }
+      }
+    } else {
+        this.updateStat({"hp": -2}, this.opposing)
     }
+    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, function(){
+      console.log("modal cb");
+      document.getElementById('game-modal').style.display = "none";
+      this.checkWinner();
+      this.opposingTurn();
+    }.bind(this))
+  }
+
+  playerFlash(){
+    
   }
 
   opposingTurn() {
@@ -125,24 +154,15 @@ class Battle {
     }.bind(this))
   }
 
-  playerTurn(move) {
-    if (move.stat_change.length > 0) {
-      for(const statHash of move.stat_change) {
-        if(Object.values(statHash) > 0) {
-          this.updateStat(statHash, this.player)
-        }else {
-          this.updateStat(statHash, this.opposing)
-        }
-      }
-    } else {
-        this.updateStat({"hp": -2}, this.opposing)
+  checkWinner(){
+    console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
+    if(parseInt(this.player.all_stats[5].base_stat) <= 0){
+      this.bigFinale(this.player)
+      return
+    }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
+      this.bigFinale(this.opposing)
+      return
     }
-    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, function(){
-      console.log("modal cb");
-      document.getElementById('game-modal').style.display = "none";
-      this.checkWinner();
-      this.opposingTurn();
-    }.bind(this))
   }
 
   addModal(message, cb){
@@ -160,14 +180,13 @@ class Battle {
     stat.base_stat += (parseInt(Object.values(statHash)[0]) * baseAttack)
     document.getElementById(`${poke.name}-${Object.keys(statHash)[0]}`).innerHTML = `${stat.stat_name}: ${stat.base_stat}`
     // this.addModal(`Show Stats Here`)
-    this.checkWinner()
   }
 
   bigFinale(poke){
     this.addModal(`${poke.name} fainted!!!!!!`, function(){
       document.getElementById('game-modal').style.display = "none";
-      app.newBattle()
-    })
+      this.app.getOrCreateUser();
+    }.bind(this))
   }
 
 

@@ -22,7 +22,7 @@ html {
   height: 500px;
 }
 
-#new-poke-form #sign-up-form {
+#new-poke-form, #sign-up-form {
   position: relative;
   left: 50px;
   top: 50px;

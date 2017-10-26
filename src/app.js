@@ -1,8 +1,7 @@
 class App {
 
-  constructor(api) {
-    this.api = api
-    // this.user
+  constructor() {
+    this.api = new Api(this)
   }
 
   renderSignUp() {
@@ -15,29 +14,34 @@ class App {
   }
 
   getOrCreateUser() {
-    //render sign-up page
     this.renderSignUp()
     document.getElementById('sign-up-form').addEventListener('submit', ev => {
       ev.preventDefault()
       const name = document.getElementById('sign-up-name').value
-      this.user = new User(name, this.api)
-      this.api.getPokemonForUser(this.user)
+      this.api.getPokemonForUser(name)
     })
   }
 
-  // addPokemonToUser() {
-  //   //form input with username and pokemon_id
-  //   this.user.getNewPokemon()
-  //   //userHash = {name: "string", pokemon_id: int}
-  //   // this.api.postNewUser(userHash)
-  // }
+  renderPokeForm(name, pokeArr) {
+    document.getElementById('game-screen').innerHTML = `
+    <form id="new-poke-form" class="newPokeForm">
+    <label>Choose your Pokemon!</label>
+    <select id="pokeMenu"></select>
+    <input type='submit' id="pokeSubmit"></input>
+    </form>
+    `
 
-  newBattle() {
-    const battle = Battle.new
-    let randomNums = [];
-    for(let i = 0; i < 2; i++){
-      randomNums.push(Math.floor(Math.random() * 150))
+    let pokeMenu = document.getElementById('pokeMenu')
+    for(let i = 0; i < pokeArr.length; i++){
+      pokeMenu.innerHTML += `<option value="${pokeArr[i].id}">${pokeArr[i].name}</option>`
     }
-    this.api.getPokemonData(randomNums, battle)
+
+    const pokeForm = document.getElementById('new-poke-form')
+    pokeForm.addEventListener("submit", e => {
+      e.preventDefault();
+      const pokeValue = e.target[0].value
+      this.api.postNewUser({name: name, pokemon_id: parseInt(pokeValue)})
+    })
   }
+
 }
