@@ -16,6 +16,7 @@ class Battle {
     <div id='menu'></div>
     <div id="game-modal" class="modal">
       <div id="modal-content" class="modal-content">
+
       </div>
     </div>`
 
@@ -83,15 +84,15 @@ class Battle {
     menu.addEventListener("submit", function(e){
       e.preventDefault()
       const move = this.player.all_moves.find(x => x.move_id === parseInt(e.target[0].value))
-      this.turn(move)
+      this.playerTurn(move)
     }.bind(this))
 
   }
 
-  turn(move) {
-    this.playerTurn(move)
-    this.opposingTurn()
-  }
+  // turn(move) {
+  //   this.playerTurn(move)
+  //   this.opposingTurn()
+  // }
 
   checkWinner(){
     console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
@@ -117,7 +118,11 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.player)
     }
-    this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`)
+    this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, function(){
+      console.log("modal cb");
+      document.getElementById('game-modal').style.display = "none";
+      this.checkWinner();
+    }.bind(this))
   }
 
   playerTurn(move) {
@@ -132,15 +137,21 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.opposing)
     }
-    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`)
+    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, function(){
+      console.log("modal cb");
+      document.getElementById('game-modal').style.display = "none";
+      this.checkWinner();
+      this.opposingTurn();
+    }.bind(this))
   }
 
-  addModal(message){
+  addModal(message, cb){
     document.getElementById('game-modal').style.display = "block"
-    document.getElementById('modal-content').innerHTML = `<p>${message}</p>`
-    window.onclick = function(event) {
-        document.getElementById('game-modal').style.display = "none";
-    }
+    document.getElementById('modal-content').innerHTML =
+    `<p>${message}</p>
+    <span class="close" id="modalButton">&times;</span>`
+    const button = document.getElementById('modalButton')
+    button.addEventListener("click", cb)
   }
 
   updateStat(statHash, poke) {
@@ -153,7 +164,10 @@ class Battle {
   }
 
   bigFinale(poke){
-    this.checkWinner(`${poke.name} fainted!!!!!!`)
+    this.addModal(`${poke.name} fainted!!!!!!`, function(){
+      document.getElementById('game-modal').style.display = "none";
+      app.newBattle()
+    })
   }
 
 
