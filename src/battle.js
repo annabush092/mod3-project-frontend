@@ -101,14 +101,6 @@ class Battle {
 
   }
 
-  // turn(move) {
-  //   this.playerTurn(move)
-  //   this.opposingTurn()
-  // }
-
-
-
-
 
   playerTurn(move) {
     if (move.stat_change.length > 0) {
@@ -122,17 +114,42 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.opposing)
     }
-    this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, function(){
-      console.log("modal cb");
-      document.getElementById('game-modal').style.display = "none";
-      this.checkWinner();
-      this.opposingTurn();
-    }.bind(this))
+
+    const flashCallBack = x => (
+      this.flashPlayer()
+    )
+
+    var intv = setInterval(flashCallBack, 100);
+
+    const endFlash = x => (
+      clearInterval(intv)
+    )
+
+    window.setTimeout(endFlash, 2000)
+
+    const modalCallBack = x => (
+      this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, x => {
+        console.log("modal cb");
+        document.getElementById('game-modal').style.display = "none";
+        this.checkWinner();
+        this.opposingTurn();
+      })
+    )
+    window.setTimeout(modalCallBack, 2000)
+
   }
 
-  playerFlash(){
-    
-  }
+
+    flashPlayer(){
+
+      let playerPic = document.getElementById('player-pic')
+      if(playerPic.innerHTML.split("/").slice(-2)[0] === "back"){
+        playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_shiny}">`
+      } else if (playerPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
+        playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_default}">`
+      }
+    }
+
 
   opposingTurn() {
     const move = this.opposing.all_moves[Math.floor(Math.random() * this.opposing.all_moves.length)]
@@ -147,11 +164,42 @@ class Battle {
     } else {
         this.updateStat({"hp": -2}, this.player)
     }
-    this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, function(){
-      console.log("modal cb");
-      document.getElementById('game-modal').style.display = "none";
-      this.checkWinner();
-    }.bind(this))
+
+    const flashCallBack = x => (
+      this.flashOpposing()
+    )
+
+    var intv = setInterval(flashCallBack, 100);
+
+    const endFlash = x => (
+      clearInterval(intv)
+    )
+
+    window.setTimeout(endFlash, 2000)
+
+    const modalCallBack = x => (
+      this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, x => {
+        console.log("modal cb");
+        document.getElementById('game-modal').style.display = "none";
+        this.checkWinner();
+      })
+    )
+    window.setTimeout(modalCallBack, 2000)
+    // this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, function(){
+    //   console.log("modal cb");
+    //   document.getElementById('game-modal').style.display = "none";
+    //   this.checkWinner();
+    // }.bind(this))
+  }
+
+  flashOpposing(){
+
+    let opposingPic = document.getElementById('opposing-pic')
+    if(opposingPic.innerHTML.split("/").slice(-2)[0] === "pokemon"){
+      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_shiny}">`
+    } else if (opposingPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
+      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_default}">`
+    }
   }
 
   checkWinner(){
