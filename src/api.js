@@ -1,19 +1,10 @@
 class Api {
 
-  constructor() {}
-
-  postNewUser(userHash) {
-    fetch(`http://localhost:3000/api/v1/users`, {
-      method: "post",
-      body: JSON.stringify({
-        name: `${userHash.name}`,
-        pokemon_id: `${userHash.pokemon_id}`
-      })
-    })
-    .then(res => res.json())
+  constructor(app) {
+    this.app = app
   }
 
-  getPokemonForUser(user) {
+  getPokemonForUser(name) {
     const pokeIdArr = [1, 4, 7]
     const returnArr = []
     for(const ele of pokeIdArr){
@@ -22,24 +13,48 @@ class Api {
       .then(json => {
         returnArr.push(json)
         if(returnArr.length === 3){
-          user.renderPokeForm(returnArr)
+          this.app.renderPokeForm(name, returnArr)
         }
       })
     }
   }
 
-  getPokemonData(arr) {
-    const jsonArr = []
-    for(const ele of arr){
-      fetch(`http://localhost:3000/api/v1/pokemons/${ele}`)
+  postNewUser(userHash) {
+    fetch(`http://localhost:3000/api/v1/users`, {
+      method: "post",
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+      body: JSON.stringify({
+        name: `${userHash.name}`,
+        pokemon_id: `${userHash.pokemon_id}`
+      })
+    })
+    .then(res => res.json())
+    .then(json => {
+      const user = new User(json, this.app)
+      new Battle(user, this.app)
+    })
+  }
+
+  getPlayerPokemon(battle, poke_id) {
+      fetch(`http://localhost:3000/api/v1/pokemons/${poke_id}`)
       .then(res => res.json())
       .then(json => {
-        jsonArr.push(json)
-        if(jsonArr.length === 2){
-          new Battle(jsonArr[0], jsonArr[1])
-        }
+        this.getOpposingPokemon(battle, json)
       })
-    }
   }
+
+  getOpposingPokemon(battle, playerJson) {
+    const randomNum = Math.floor(Math.random() * 150)
+      fetch(`http://localhost:3000/api/v1/pokemons/${randomNum}`)
+      .then(res => res.json())
+      .then(json => {
+        battle.startGame(playerJson, json)
+      })
+  }
+
+
 
 }
