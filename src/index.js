@@ -2,8 +2,8 @@ window.onload = function(){
 
   const api = new Api
   const app = new App(api)
-  app.getOrCreateUser()
-  // app.newBattle()
+  // app.getOrCreateUser()
+  app.newBattle()
 
 
 

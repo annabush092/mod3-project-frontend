@@ -13,7 +13,7 @@ class User {
 
   renderPokeForm(pokeArr) {
     document.getElementById('game-screen').innerHTML = `
-    <form class="newPokeForm">
+    <form id="new-poke-form" class="newPokeForm">
     <label>Choose your Pokemon!</label>
     <select id="pokeMenu"></select>
     <input type='submit' id="pokeSubmit"></input>

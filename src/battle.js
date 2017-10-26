@@ -33,9 +33,9 @@ class Battle {
 
     document.getElementById('menu').innerHTML = `
     <form class="battleForm" action="index.html" method="post">
-    <label>Moves:</label>
-    <select id="moveMenu"></select>
-    <input type='submit' id="moveSubmit"></input>
+      <label>Moves:</label>
+      <select id="moveMenu"></select>
+      <input type='submit' id="moveSubmit"></input>
     </form>
     `
     //to be added later:
