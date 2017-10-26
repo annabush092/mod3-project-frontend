@@ -6,10 +6,15 @@ class App {
 
   renderSignUp() {
     document.getElementById('game-screen').innerHTML =
-    `<form id="sign-up-form">
+    `<img src="images/Logo.png" id="logo">
+    <form id="sign-up-form">
+      <p>
+      Hello there! Welcome to the </br>
+      world of Pokemon!</br>
+      First, what is your name?</p>
       <label>Name: </label>
       <input type="text" id="sign-up-name">
-      <input type="submit">
+      <input type="submit"> </input>
     </form>`
   }
 
@@ -25,7 +30,7 @@ class App {
   renderPokeForm(name, pokeArr) {
     document.getElementById('game-screen').innerHTML = `
     <form id="new-poke-form" class="newPokeForm">
-    <label>Choose your Pokemon!</label>
+    <p>Choose your Pokemon!</p>
     <select id="pokeMenu"></select>
     <input type='submit' id="pokeSubmit"></input>
     </form>
