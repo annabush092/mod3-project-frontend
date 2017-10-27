@@ -136,7 +136,6 @@ class Battle {
       })
     )
     window.setTimeout(modalCallBack, 2000)
-
   }
 
 
@@ -218,10 +217,12 @@ class Battle {
     document.getElementById('game-modal').style.display = "block"
     document.getElementById('modal-content').innerHTML =
     `<p>${message}</p>
-    <span class="close" id="modalButton">&times;</span>`
+    <button class="close" id="modalButton"></button>`
     const button = document.getElementById('modalButton')
     button.addEventListener("click", cb)
   }
+  // <span class="close" id="modalButton">&times;</span>`
+
 
   updateStat(statHash, poke) {
     let baseAttack = Math.floor(Math.random() * 10)

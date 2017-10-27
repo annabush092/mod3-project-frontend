@@ -5,12 +5,53 @@
 h1 {
   color: white;
   padding-left: 50px;
+  font-family: 'VT323', monospace;
+  letter-spacing: 2px;
 }
 
 html {
   background-image: url('images/battle-space-background.jpg');
   background-size: cover;
 }
+
+input[type=submit] {
+    background: url(images/pixel-arrow.png);
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    border: 0;
+    display: block;
+    height: 30px;
+    width: 20px;
+    float: right;
+    font-family: 'VT323', monospace;
+}
+
+input[type=text] {
+    padding: 5px;
+    padding-left: 12px;
+    border: solid;
+    border-radius: 10px;
+    background-color: rgb(190,200,162);
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+}
+
+select {
+    padding: 5px 5px;
+    border: solid;
+    border-radius: 10px;
+    background-color: rgb(190,200,162);
+    box-shadow: none;
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
 
 #screen {
   padding-left: 50px;
@@ -22,48 +63,86 @@ html {
   height: 500px;
 }
 
-#new-poke-form, #sign-up-form {
+#logo {
+  width: 80%;
+  position: relative;
+  left: 55px;
+  top: 25px;
+}
+
+#sign-up-form {
   position: relative;
   left: 50px;
   top: 50px;
   padding: 50px;
+  padding-top: 30px;
   background: rgb(190,200,162);
   width: 80%;
   border-style: double;
   border-width: thick;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+}
+
+#new-poke-form {
+  position: relative;
+  left: 50px;
+  top: 50px;
+  padding: 30px;
+  padding-top: 10px;
+  background: rgb(190,200,162);
+  width: 50%;
+  border-style: double;
+  border-width: thick;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+
 }
 
 #battle-background {
-  background: purple;
+  background: rgb(190,200,162);
   width: 100%;
 }
 
 .pokemon-display{
   float: left;
-  border-style: solid;
+  border-style: double;
+  border-width: thick;
   width: 50%;
 }
 
 #menu{
   float: left;
   width: 100%;
-  background: purple;
+  background: rgb(190,200,162);
   border-style: double;
   border-width: thick;
+  padding: 5px;
 }
-#menu:before{
-  content: "";
-  display: block;
-  padding-top: 30%
+
+.battleForm {
+  padding: 20px;
+  padding-top: 30px;
+  padding-bottom: 40px;
+  background: rgb(190,200,162);
+  border-style: double;
+  border-width: thick;
+  width: 50%;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+
 }
+
 
 
 .poke-name {
-  padding: none;
+  padding-left: 5px;
+  padding-right: 5px;
   margin: none;
   width: 100%;
-  font-size: 200%;
-  color: white;
+  font-size: 50px;
+  color: Black;
+  font-family: 'VT323', monospace;
 }
 #player-name{
 }
@@ -73,25 +152,25 @@ html {
 
 
 .poke-stats {
+  padding: 10px;
+  padding-top: 0px;
   width: 100%;
-  color: white;
+  color: Black;
+  font-family: 'VT323', monospace;
+  font-size: 28px;
 }
 #player-stats{
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  text-align: left;
 }
 #opposing-stats{
-  list-style: none;
-  padding: 0;
-  margin: 0;
   text-align: right;
 }
 
 
+
 .poke-pic {
   width: 100%;
-  background: purple;
+  background: rgb(190,200,162);
 }
 #player-pic {
   float: left;
@@ -119,28 +198,27 @@ html {
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    background-image: url('images/popup-space.jpg');
+    background-repeat: no-repeat;
+    background-size:100% 100%;
+    color: white;
+    margin: 20% 60px; /* 15% from the top and centered */
+    padding: 30px;
+    padding-bottom: 150px;
+    padding-top: 0px;
+    border: 5px solid black;
+    width: 557px; /* Could be more or less, depending on screen size */
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+    text-shadow: 1px 1px 20px black;
 }
-
-
-
-
-
-
-
-
-
-.box{
-  float: left;
-  width: 10%;
-  background: black;
-}
-.box:before{
-	content: "";
-	display: block;
-	padding-top: 100%;
+#modalButton {
+  background: url(images/pixel-arrow.png);
+  background-repeat: no-repeat;
+  background-size:100% 100%;
+  border: 0;
+  display: block;
+  height: 30px;
+  width: 20px;
+  float: right;
 }
