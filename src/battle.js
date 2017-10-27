@@ -262,7 +262,7 @@ class Battle {
   }
 
   bigFinale(poke){
-    this.addModal(`${poke.name} fainted!!!!!!`, function(){
+    this.addModal(`${poke.name.toUpperCase()} fainted!!!!!!`, function(){
       document.getElementById('game-modal').style.display = "none";
       this.app.getOrCreateUser();
     }.bind(this))
