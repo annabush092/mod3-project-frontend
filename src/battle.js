@@ -113,8 +113,6 @@ class Battle {
           document.getElementById('game-modal').style.display = "none";
           document.getElementById('modal-content').innerHTML = "";
           let win = this.checkWinner();
-          //make checkWinner return something to signal IF opposing faints, THEN
-          //   do not invoke opposingTurn
           if(win) {
             return
           }else {
@@ -144,18 +142,15 @@ class Battle {
 
   addModal(message, cb){
     document.getElementById('game-modal').style.display = "block"
-    let callBack = cb
-    let typeMessage = message
-    //do we need these definitions?
     let i = 0
     function typeWriter() {
-      if (i < typeMessage.length) {
-        document.getElementById('modal-content').innerHTML += typeMessage.charAt(i);
+      if (i < message.length) {
+        document.getElementById('modal-content').innerHTML += message.charAt(i);
         i++;
         setTimeout(typeWriter, 50);
       } else {
         document.getElementById('modal-content').innerHTML += `<button class="close" id="modalButton"></button>`
-        document.getElementById('modalButton').addEventListener("click", callBack)
+        document.getElementById('modalButton').addEventListener("click", cb)
       }
     }
     typeWriter()
@@ -170,7 +165,6 @@ class Battle {
       this.bigFinale(this.opposing)
       return true
     }else {
-    //the entire function should return if there is a winner or if the game should continue
       return false
     }
   }
@@ -180,6 +174,7 @@ class Battle {
       document.getElementById('game-modal').style.display = "none";
       this.app.getOrCreateUser();
     }.bind(this))
+    //add some sort of pause to look at stats before exiting battle?
   }
 
   opposingTurn() {
