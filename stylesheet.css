@@ -211,7 +211,7 @@ ul {
     color: white;
     margin: 20% 60px; /* 15% from the top and centered */
     padding: 30px;
-    padding-bottom: 150px;
+    height: 200px;
     padding-top: 0px;
     border: 5px solid black;
     width: 557px; /* Could be more or less, depending on screen size */

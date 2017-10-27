@@ -128,7 +128,7 @@ class Battle {
     window.setTimeout(endFlash, 2000)
 
     const modalCallBack = x => (
-      this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, x => {
+      this.addModal(`${this.player.name.toUpperCase()} uses ${move.move}! ${move.flavor_text}`, x => {
         console.log("modal cb");
         document.getElementById('game-modal').style.display = "none";
         document.getElementById('modal-content').innerHTML = "";
@@ -178,7 +178,7 @@ class Battle {
     window.setTimeout(endFlash, 2000)
 
     const modalCallBack = x => (
-      this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, x => {
+      this.addModal(`${this.opposing.name.toUpperCase()} uses ${move.move}! ${move.flavor_text}`, x => {
         console.log("modal cb");
         document.getElementById('game-modal').style.display = "none";
         document.getElementById('modal-content').innerHTML = "";
