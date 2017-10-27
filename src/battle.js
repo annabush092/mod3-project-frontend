@@ -131,6 +131,7 @@ class Battle {
       this.addModal(`Player pokemon uses ${move.move}! ${move.flavor_text}`, x => {
         console.log("modal cb");
         document.getElementById('game-modal').style.display = "none";
+        document.getElementById('modal-content').innerHTML = "";
         this.checkWinner();
         this.opposingTurn();
       })
@@ -180,6 +181,7 @@ class Battle {
       this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, x => {
         console.log("modal cb");
         document.getElementById('game-modal').style.display = "none";
+        document.getElementById('modal-content').innerHTML = "";
         this.checkWinner();
       })
     )
@@ -194,11 +196,12 @@ class Battle {
   flashOpposing(){
 
     let opposingPic = document.getElementById('opposing-pic')
-    debugger
+    let shiny = `<image id="player-pic" src="${this.opposing.front_shiny}">`
+    let dull = `<image id="player-pic" src="${this.opposing.front_default}">`
     if(opposingPic.innerHTML.split("/").slice(-2)[0] === "pokemon"){
-      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_shiny}">`
+      opposingPic.innerHTML= shiny
     } else if (opposingPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
-      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_default}">`
+      opposingPic.innerHTML= dull
     }
   }
 
@@ -215,13 +218,39 @@ class Battle {
 
   addModal(message, cb){
     document.getElementById('game-modal').style.display = "block"
-    document.getElementById('modal-content').innerHTML =
-    `<p>${message}</p>
-    <button class="close" id="modalButton"></button>`
-    const button = document.getElementById('modalButton')
-    button.addEventListener("click", cb)
+
+    let callBack = cb
+    let typeMessage = message
+    let i = 0
+
+  //   const type = function realTypeWriter(){
+      function typeWriter() {
+        if (i < typeMessage.length) {
+        document.getElementById('modal-content').innerHTML += typeMessage.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      } else {
+        document.getElementById('modal-content').innerHTML +=
+        `<button class="close" id="modalButton"></button>`
+
+        const button = document.getElementById('modalButton')
+        button.addEventListener("click", callBack)
+      }
+    }
+
+    typeWriter()
+  //   }
+  // }.bind(this)
+  //
+  //   type()
+    // document.getElementById('modal-content').innerHTML =
+    // `<p>${message}</p>`
+
+
   }
   // <span class="close" id="modalButton">&times;</span>`
+
+
 
 
   updateStat(statHash, poke) {
