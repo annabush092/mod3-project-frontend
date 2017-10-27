@@ -213,7 +213,7 @@ ul {
     text-shadow: 1px 1px 20px black;
 }
 #modalButton {
-  background: url(images/pixel-arrow.png);
+  background: url(images/pixel-arrow-white.png);
   background-repeat: no-repeat;
   background-size:100% 100%;
   border: 0;
@@ -221,4 +221,5 @@ ul {
   height: 30px;
   width: 20px;
   float: right;
+  box-shadow: 1px 1px 50px black;
 }
