@@ -106,6 +106,10 @@ class Battle {
     window.setTimeout(endFlash, 2000)
     //make timeout slightly shorter than modal timeout so you have time to
     //   reset image to default.
+    let playerPic = document.getElementById('player-pic')
+    if (playerPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
+      playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_default}">`
+    }
 
     const modalCallBack = x => (
       this.addModal(`${this.player.name.toUpperCase()} uses ${move.move}! ${move.flavor_text}`,
@@ -178,8 +182,8 @@ class Battle {
   }
 
   opposingTurn() {
-    const move = this.opposing.all_moves[Math.floor(Math.random() * this.opposing.all_moves.length)]
-    //pull out into variables to make easier to read
+    const opposingMoves = this.opposing.all_moves
+    const move = opposingMoves[Math.floor(Math.random() * opposingMoves.length)]
     if (move.stat_change.length > 0) {
       for(const statHash of move.stat_change) {
         if(Object.values(statHash) > 0) {
@@ -197,11 +201,15 @@ class Battle {
     var intv = setInterval(flashCallBack, 100);
     const endFlash = x => ( clearInterval(intv) )
     window.setTimeout(endFlash, 2000)
+    //ensure final image is default
+    let opposingPic = document.getElementById('opposing-pic')
+    if (opposingPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
+      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_default}">`
+    }
 
     const modalCallBack = x => (
       this.addModal(`${this.opposing.name.toUpperCase()} uses ${move.move}! ${move.flavor_text}`,
         x => {
-          console.log("modal cb");
           document.getElementById('game-modal').style.display = "none";
           document.getElementById('modal-content').innerHTML = "";
           this.checkWinner();
@@ -213,12 +221,10 @@ class Battle {
 
   flashOpposing(){
     let opposingPic = document.getElementById('opposing-pic')
-    let shiny = `<image id="player-pic" src="${this.opposing.front_shiny}">`
-    let dull = `<image id="player-pic" src="${this.opposing.front_default}">`
     if(opposingPic.innerHTML.split("/").slice(-2)[0] === "pokemon"){
-      opposingPic.innerHTML= shiny
+      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_shiny}">`
     } else if (opposingPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
-      opposingPic.innerHTML= dull
+      opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_default}">`
     }
   }
   //can this be the same method as flashPlayer?
