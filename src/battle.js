@@ -195,6 +195,7 @@ class Battle {
   flashOpposing(){
 
     let opposingPic = document.getElementById('opposing-pic')
+    debugger
     if(opposingPic.innerHTML.split("/").slice(-2)[0] === "pokemon"){
       opposingPic.innerHTML= `<image id="player-pic" src="${this.opposing.front_shiny}">`
     } else if (opposingPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
