@@ -28,10 +28,8 @@ class Battle {
     <div id='menu'></div>
     <div id="game-modal" class="modal">
       <div id="modal-content" class="modal-content">
-
       </div>
     </div>`
-
 
     document.getElementById('left-display').innerHTML = `
     <div id='player-name' class='poke-name'></div>
@@ -50,9 +48,6 @@ class Battle {
       <input type='submit' id="moveSubmit"></input>
     </form>
     `
-    //to be added later:
-    //<label>Pokemon:</label>
-    // <select id="pokeMenu"></select>
   }
 
   renderBattle() {
@@ -140,15 +135,14 @@ class Battle {
   }
 
 
-    flashPlayer(){
-
-      let playerPic = document.getElementById('player-pic')
-      if(playerPic.innerHTML.split("/").slice(-2)[0] === "back"){
-        playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_shiny}">`
-      } else if (playerPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
-        playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_default}">`
-      }
+  flashPlayer(){
+    let playerPic = document.getElementById('player-pic')
+    if(playerPic.innerHTML.split("/").slice(-2)[0] === "back"){
+      playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_shiny}">`
+    } else if (playerPic.innerHTML.split("/").slice(-2)[0] === "shiny") {
+      playerPic.innerHTML= `<image id="player-pic" src="${this.player.back_default}">`
     }
+  }
 
 
   opposingTurn() {
@@ -186,15 +180,9 @@ class Battle {
       })
     )
     window.setTimeout(modalCallBack, 2000)
-    // this.addModal(`Opposing pokemon uses ${move.move}! ${move.flavor_text}`, function(){
-    //   console.log("modal cb");
-    //   document.getElementById('game-modal').style.display = "none";
-    //   this.checkWinner();
-    // }.bind(this))
   }
 
   flashOpposing(){
-
     let opposingPic = document.getElementById('opposing-pic')
     let shiny = `<image id="player-pic" src="${this.opposing.front_shiny}">`
     let dull = `<image id="player-pic" src="${this.opposing.front_default}">`
@@ -223,9 +211,8 @@ class Battle {
     let typeMessage = message
     let i = 0
 
-  //   const type = function realTypeWriter(){
-      function typeWriter() {
-        if (i < typeMessage.length) {
+    function typeWriter() {
+      if (i < typeMessage.length) {
         document.getElementById('modal-content').innerHTML += typeMessage.charAt(i);
         i++;
         setTimeout(typeWriter, 50);
@@ -238,27 +225,11 @@ class Battle {
       }
     }
 
-    typeWriter()
-  //   }
-  // }.bind(this)
-  //
-  //   type()
-    // document.getElementById('modal-content').innerHTML =
-    // `<p>${message}</p>`
-
-
-  }
-  // <span class="close" id="modalButton">&times;</span>`
-
-
-
-
   updateStat(statHash, poke) {
     let baseAttack = Math.floor(Math.random() * 10)
     const stat = poke.all_stats.find(x => x.stat_name === Object.keys(statHash)[0])
     stat.base_stat += (parseInt(Object.values(statHash)[0]) * baseAttack)
     document.getElementById(`${poke.name}-${Object.keys(statHash)[0]}`).innerHTML = `${stat.stat_name}: ${stat.base_stat}`
-    // this.addModal(`Show Stats Here`)
   }
 
   bigFinale(poke){
