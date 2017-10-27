@@ -112,10 +112,14 @@ class Battle {
         x => {
           document.getElementById('game-modal').style.display = "none";
           document.getElementById('modal-content').innerHTML = "";
-          this.checkWinner();
+          let win = this.checkWinner();
           //make checkWinner return something to signal IF opposing faints, THEN
           //   do not invoke opposingTurn
-          this.opposingTurn();
+          if(win) {
+            return
+          }else {
+            this.opposingTurn();
+          }
         }
       )
     )
@@ -161,13 +165,14 @@ class Battle {
     // console.log("Player: ", this.player.all_stats[5].base_stat, "Opposing: ", this.opposing.all_stats[5].base_stat)
     if(parseInt(this.player.all_stats[5].base_stat) <= 0){
       this.bigFinale(this.player)
-      return
+      return true
     }else if (parseInt(this.opposing.all_stats[5].base_stat) <= 0) {
       this.bigFinale(this.opposing)
-      return
-    }
-    //do we need return?
+      return true
+    }else {
     //the entire function should return if there is a winner or if the game should continue
+      return false
+    }
   }
 
   bigFinale(poke){
