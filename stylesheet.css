@@ -96,7 +96,14 @@ ul {
   border-width: thick;
   font-family: 'VT323', monospace;
   font-size: 20px;
-
+}
+#poke-image-div {
+  width: 70%;
+  height: 70%;
+  margin-left: 25%;
+}
+#poke-form-pic {
+  width: 100%;
 }
 
 #battle-background {

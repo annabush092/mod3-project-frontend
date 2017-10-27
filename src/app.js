@@ -28,18 +28,28 @@ class App {
   }
 
   renderPokeForm(name, pokeArr) {
-    document.getElementById('game-screen').innerHTML = `
+    const gameScreen = document.getElementById('game-screen')
+    gameScreen.innerHTML = `
     <form id="new-poke-form" class="newPokeForm">
     <p>Choose your Pokemon!</p>
     <select id="pokeMenu"></select>
     <input type='submit' id="pokeSubmit"></input>
     </form>
-    `
+    <div id="poke-image-div"></div>`
 
-    let pokeMenu = document.getElementById('pokeMenu')
+    const pokeMenu = document.getElementById('pokeMenu')
     for(let i = 0; i < pokeArr.length; i++){
       pokeMenu.innerHTML += `<option value="${pokeArr[i].id}">${pokeArr[i].name}</option>`
+      if(i===0) {
+        document.getElementById('poke-image-div').innerHTML = `<img id="poke-form-pic" src="${pokeArr[i].front_default}">`
+      }
     }
+    pokeMenu.addEventListener("change", e => {
+      const pokeID = parseInt(e.target.value)
+      let pokemon = pokeArr.find(p => (p.id === pokeID))
+      const imageHTML = `<img id="poke-form-pic" src="${pokemon.front_default}">`
+      document.getElementById('poke-image-div').innerHTML = imageHTML
+    })
 
     const pokeForm = document.getElementById('new-poke-form')
     pokeForm.addEventListener("submit", e => {
